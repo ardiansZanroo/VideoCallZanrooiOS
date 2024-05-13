@@ -4,20 +4,23 @@
 import PackageDescription
 
 let package = Package(
-    name: "zanrooCallPkg",
+    name: "ZanrooCallWebPackage",
+    platforms: [
+           .iOS(.v13), // Adjust the minimum version as needed
+       ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "zanrooCallPkg",
-            targets: ["zanrooCallPkg"]),
+            name: "ZanrooCallWebPackage",
+            targets: ["ZanrooCallWebPackage"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "zanrooCallPkg"),
+            name: "ZanrooCallWebPackage"),
         .testTarget(
-            name: "zanrooCallPkgTests",
-            dependencies: ["zanrooCallPkg"]),
+            name: "ZanrooCallWebPackageTests",
+            dependencies: ["ZanrooCallWebPackage"]),
     ]
 )

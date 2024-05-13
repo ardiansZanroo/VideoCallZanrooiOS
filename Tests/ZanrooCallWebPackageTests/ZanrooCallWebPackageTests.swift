@@ -1,7 +1,7 @@
 import XCTest
-@testable import zanrooCallPkg
+@testable import ZanrooCallWebPackage
 
-final class zanrooCallPkgTests: XCTestCase {
+final class zanrooCallWebPackageTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
