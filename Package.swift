@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "ZanrooCallWebPackage",
     platforms: [
-           .iOS(.v13), // Adjust the minimum version as needed
+           .iOS(.v12), // Adjust the minimum version as needed
        ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
