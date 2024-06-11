@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   PrivacyInfo.xcprivacy
+   Created by ardians on 11/06/24.
+   All rights reserved.
+-->
+
+<plist version="1.0">
+<dict>
+    <key>dataCollection</key>
+    <array>
+        <dict>
+            <key>dataType</key>
+            <string>Camera</string>
+            <key>purpose</key>
+            <string>Functionality</string>
+            <key>isOptional</key>
+            <false/>
+        </dict>
+        <dict>
+            <key>dataType</key>
+            <string>Microphone</string>
+            <key>purpose</key>
+            <string>Functionality</string>
+            <key>isOptional</key>
+            <false/>
+        </dict>
+    </array>
+    <key>dataTypes</key>
+    <dict>
+        <key>Camera</key>
+        <dict>
+            <key>description</key>
+            <string>Access to the camera is required for video calls</string>
+        </dict>
+        <key>Microphone</key>
+        <dict>
+            <key>description</key>
+            <string>Access to the microphone is required for audio in video calls</string>
+        </dict>
+    </dict>
+</dict>
+</plist>
