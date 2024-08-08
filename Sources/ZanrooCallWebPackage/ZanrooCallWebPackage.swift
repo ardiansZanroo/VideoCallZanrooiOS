@@ -2,9 +2,10 @@ import Foundation
 import SwiftUI
 import WebKit
 
+@available(iOS 13.0, *)
 public struct zanrooCallWeb: UIViewRepresentable {
     var id: String
-    var onCallStop: () -> Void // Closure to execute when the call stops
+    var onCallStop: (String) -> Void // Closure to execute when the call stops with a message
 
     // JavaScript to inject into the web view
     private let stopScript = """
@@ -12,13 +13,13 @@ public struct zanrooCallWeb: UIViewRepresentable {
         // Listener already set up
     } else {
         window.WebViewApp = {};
-        window.WebViewApp.stopLoading = function() {
-            window.webkit.messageHandlers.callStopped.postMessage(null);
+        window.WebViewApp.stopLoading = function(message) {
+            window.webkit.messageHandlers.callStopped.postMessage(message);
         };
     }
     """
 
-    public init(id: String, onCallStop: @escaping () -> Void) {
+    public init(id: String, onCallStop: @escaping (String) -> Void) {
         self.id = id
         self.onCallStop = onCallStop
     }
@@ -36,8 +37,10 @@ public struct zanrooCallWeb: UIViewRepresentable {
 
         public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             if message.name == "callStopped" {
-                DispatchQueue.main.async {
-                    self.parent.onCallStop() // Call the closure when the web view posts the "callStopped" message
+                if let messageBody = message.body as? String {
+                    DispatchQueue.main.async {
+                        self.parent.onCallStop(messageBody) // Call the closure with the message from the web view
+                    }
                 }
             }
         }
