@@ -5,7 +5,7 @@ import WebKit
 @available(iOS 13.0, *)
 public struct zanrooCallWeb: UIViewRepresentable {
     var id: String
-    var onCallStop: (String) -> Void // Closure to execute when the call stops with a message
+    var onCallStop: (CallResult) -> Void // Closure to execute when the call stops with a message
 
     // JavaScript to inject into the web view
     private let stopScript = """
@@ -19,7 +19,7 @@ public struct zanrooCallWeb: UIViewRepresentable {
     }
     """
 
-    public init(id: String, onCallStop: @escaping (String) -> Void) {
+    public init(id: String, onCallStop: @escaping (CallResult) -> Void) {
         self.id = id
         self.onCallStop = onCallStop
     }
@@ -37,9 +37,9 @@ public struct zanrooCallWeb: UIViewRepresentable {
 
         public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             if message.name == "callStopped" {
-                if let messageBody = message.body as? String {
+                if let messageBody = message.body as? String, let callResult = CallResult(rawValue: messageBody) {
                     DispatchQueue.main.async {
-                        self.parent.onCallStop(messageBody) // Call the closure with the message from the web view
+                        self.parent.onCallStop(callResult) // Call the closure with the message from the web view
                     }
                 }
             }
@@ -62,4 +62,11 @@ public struct zanrooCallWeb: UIViewRepresentable {
             uiView.load(request)
         }
     }
+}
+
+public enum CallResult: String {
+    case disconnected
+    case success
+    case error
+    case canceled
 }
