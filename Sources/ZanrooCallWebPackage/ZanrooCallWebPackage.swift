@@ -60,7 +60,7 @@ public struct zanrooCallWeb: UIViewRepresentable {
     }
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
-        let urlString = "https://rfe.kyc-zanroodesk.my.id/client?id=\(id)"
+        let urlString = "https://ekyc-be.videocall.stg.super-id.net/client?id=\(id)"
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
             uiView.load(request)
