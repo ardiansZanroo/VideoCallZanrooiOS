@@ -52,7 +52,11 @@ public struct zanrooCallWeb: UIViewRepresentable {
         webViewConfiguration.allowsInlineMediaPlayback = true
         webViewConfiguration.userContentController.add(context.coordinator, name: "callStopped")
 
-        return WKWebView(frame: .zero, configuration: webViewConfiguration)
+        let webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.scrollView.isScrollEnabled = false
+        webView.scrollView.bounces = false
+        return webView
     }
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
@@ -60,6 +64,18 @@ public struct zanrooCallWeb: UIViewRepresentable {
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
             uiView.load(request)
+        }
+
+        // Update constraints to make the web view follow the parent size
+        DispatchQueue.main.async {
+            if let superview = uiView.superview {
+                NSLayoutConstraint.activate([
+                    uiView.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+                    uiView.trailingAnchor.constraint(equalTo: superview.trailingAnchor),
+                    uiView.topAnchor.constraint(equalTo: superview.topAnchor),
+                    uiView.bottomAnchor.constraint(equalTo: superview.bottomAnchor)
+                ])
+            }
         }
     }
 }
