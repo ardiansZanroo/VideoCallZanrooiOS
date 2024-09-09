@@ -5,6 +5,7 @@ import WebKit
 @available(iOS 13.0, *)
 public struct zanrooCallWeb: UIViewRepresentable {
     var id: String
+    var environment: Environment
     var onCallStop: (CallResult) -> Void // Closure to execute when the call stops with a message
 
     // JavaScript to inject into the web view
@@ -19,8 +20,27 @@ public struct zanrooCallWeb: UIViewRepresentable {
     }
     """
 
-    public init(id: String, onCallStop: @escaping (CallResult) -> Void) {
+    // Enum to represent different environments
+    public enum Environment {
+        case dev
+        case staging
+        case production
+
+        var baseUrl: String {
+            switch self {
+            case .dev:
+                return "https://rfe.kyc-zanroodesk.my.id/client?id="
+            case .staging:
+                return "https://ekyc-fe.videocall.stg.super-id.net/client?id="
+            case .production:
+                return "https://ekyc-fe.videocall.stg.super-id.net/client?id="
+            }
+        }
+    }
+
+    public init(id: String, environment: Environment, onCallStop: @escaping (CallResult) -> Void) {
         self.id = id
+        self.environment = environment
         self.onCallStop = onCallStop
     }
 
@@ -60,7 +80,7 @@ public struct zanrooCallWeb: UIViewRepresentable {
     }
 
     public func updateUIView(_ uiView: WKWebView, context: Context) {
-        let urlString = "https://ekyc-fe.videocall.stg.super-id.net/client?id=\(id)"
+        let urlString = environment.baseUrl + id // Use the selected environment's base URL
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
             uiView.load(request)
